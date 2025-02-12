@@ -161,6 +161,7 @@ class Inference(object):
         cfg.MODEL.WEIGHTS = model_fpath 
         cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST = nms # customize the nms threshold
         cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = min_score
+        cfg.MODEL.DEVICE = "cpu" # set to cpu for free streamlit deploy 
         cfg.freeze()
         return cfg
     
