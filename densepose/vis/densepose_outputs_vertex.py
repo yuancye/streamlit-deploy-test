@@ -54,7 +54,9 @@ class DensePoseOutputsVertexVisualizer(object):
         )
         self.class_to_mesh_name = get_class_to_mesh_name_mapping(cfg)
         self.embedder = build_densepose_embedder(cfg)
-        self.device = torch.device(device)
+        self.embedder.to("cpu")  # Force embedder to CPU, for streamlit free deploy
+        self.device = torch.device("cpu")  # Ensure the device is CPU, for streamlit free deploy
+
         self.default_class = default_class
 
         self.mesh_vertex_embeddings = {
@@ -90,8 +92,9 @@ class DensePoseOutputsVertexVisualizer(object):
             )
             embed_map = get_xyz_vertex_embedding(mesh_name, self.device)
             ## device mismatch on GPU and CPU
-            device = embed_map.device  # Get the device of embed_map
-            closest_vertices = closest_vertices.to(device)  # Move closest_vertices to the same device
+            # device = embed_map.device  # Get the device of embed_map
+            # closest_vertices = closest_vertices.to(device)  # Move closest_vertices to the same device
+            closest_vertices = closest_vertices.to("cpu")
             vis = (embed_map[closest_vertices].clip(0, 1) * 255.0).cpu().numpy()
             mask_numpy = mask.cpu().numpy().astype(dtype=np.uint8)
             image_bgr = self.mask_visualizer.visualize(image_bgr, mask_numpy, vis, [x, y, w, h])
