@@ -158,10 +158,10 @@ class Inference(object):
         cfg = get_cfg() 
         add_densepose_config(cfg) 
         cfg.merge_from_file(config_fpath) 
+        cfg.merge_from_list(["MODEL.DEVICE", "cpu"])
         cfg.MODEL.WEIGHTS = model_fpath 
         cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST = nms # customize the nms threshold
         cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = min_score
-        cfg.MODEL.DEVICE = "cpu" # set to cpu for free streamlit deploy 
         cfg.freeze()
         return cfg
     
