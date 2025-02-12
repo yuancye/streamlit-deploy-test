@@ -45,7 +45,7 @@ class DensePoseOutputsVertexVisualizer(object):
         inplace=True,
         cmap=cv2.COLORMAP_JET,
         alpha=0.7,
-        device="cuda",
+        device="cpu", # "cuda", # change to cpu for streamlit deploy
         default_class=0,
         **kwargs,
     ):
